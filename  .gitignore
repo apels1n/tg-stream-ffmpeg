@@ -1,5 +1,6 @@
 venv/
 music/
+resources/modules/__pycache__/
 *.jpg
 *.jpeg
 *.png
