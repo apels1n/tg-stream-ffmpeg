@@ -1,0 +1,5 @@
+venv/
+music/
+*.jpg
+*.jpeg
+*.png
