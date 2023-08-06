@@ -26,6 +26,7 @@ class Player():
 
         ffmpeg_command= (f"ffmpeg\x20"
                          f"-stream_loop -1\x20"
+                         f"-thread_queue_size 512\x20"
                          f"-f image2\x20"
                          f"-i \"{str(self.__cover)}\"\x20"
                          f"-re\x20"
