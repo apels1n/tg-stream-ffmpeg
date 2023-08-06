@@ -18,6 +18,7 @@ class Player():
         stream_key = os.environ.get('stream_key')
         width = os.environ.get('video_width')
         height = os.environ.get('video_height')
+        minutes, seconds = self.__meta.getDuration()
 
         ffmpeg_command= (f"ffmpeg\x20"
                          f"-stream_loop -1\x20"
@@ -25,7 +26,25 @@ class Player():
                          f"-i \"{str(self.__image)}\"\x20"
                          f"-re\x20"
                          f"-i \"{str(self.__audio)}\"\x20"
-                         f"-filter_complex \"[0:v]scale='min({width},iw)':'min({height},ih)',pad={width}:{height}:(ow-iw)/2:(oh-ih)/2[v1];[v1]drawtext=text='{self.__artist} - {self.__title}':x=85:y=h - 145:fontsize=60:fontcolor=white:fontfile=\"resources/fonts/Roboto-Regular.ttf\":box=1:boxcolor=black@0.5:boxborderw=30[v2]\" "
+                         f"-filter_complex "
+                            f"\"[0:v]scale='min({width},iw)'"
+                            f":'min({height},ih)',"
+                            f"pad={width}:{height}:(ow-iw)/2:(oh-ih)/2[v1];"
+                            f"[v1]drawtext="
+                                f"text='{self.__artist} - {self.__title}':"
+                                f"x=85:y=h - 145:"
+                                f"fontsize=60:"
+                                f"fontcolor=white:"
+                                f"fontfile=\"resources/fonts/Roboto-Regular.ttf\":"
+                                f"box=1:"
+                                f"boxcolor=black@0.5:"
+                                f"boxborderw=30[v2],"
+                                f"drawtext="
+                                f"text='{minutes}:{seconds} | ':"
+                                f"x=85:y=h - 85:"
+                                f"fontsize=40:"
+                                f"fontcolor=white:"
+                                f"fontfile=\"resources/fonts/Roboto-Regular.ttf\"[v2];\"\x20"
                          f"-c:v libx264\x20"
                          f"-preset {preset}\x20"
                          f"-b:v 3500k\x20"
