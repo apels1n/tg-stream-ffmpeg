@@ -7,4 +7,5 @@ class DirListner:
         self.__mp3_files = glob.glob(os.path.join(self.__dir, f"*.{type}"))
 
     def getFiles(self):
+        self.__mp3_files.sort()
         return self.__mp3_files
