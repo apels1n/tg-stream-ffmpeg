@@ -3,10 +3,12 @@ import asyncio
 from resources.modules import dirListner as dlist
 from resources.modules import player as pl
 
+
 async def updateFileList():
     global flist
     flist = dlist.DirListner("music").getFiles()
     await asyncio.sleep(3)
+
 
 async def playStream():
     while True:
@@ -17,6 +19,7 @@ async def playStream():
                 await updateFileList()
         except Exception as e:
             print(e)
+
 
 async def main():
     await asyncio.gather(updateFileList())

@@ -10,6 +10,7 @@ class Player():
         self.__meta = MetaViewer.MetaViewer(self.__audio)
         self.__artist, self.__title = self.__meta.getArtistAndTitle()
         self.__minutes, self.__seconds = self.__meta.getDuration()
+        self.__cover = self.__meta.getTrackCover()
 
     def play(self):
         fps = os.environ.get('fps')
@@ -26,12 +27,12 @@ class Player():
         ffmpeg_command= (f"ffmpeg\x20"
                          f"-stream_loop -1\x20"
                          f"-f image2\x20"
-                         f"-i \"{str(self.__image)}\"\x20"
+                         f"-i \"{str(self.__cover)}\"\x20"
                          f"-re\x20"
                          f"-i \"{str(self.__audio)}\"\x20"
                          f"-filter_complex "
-                            f"\"[0:v]scale='min({width},iw)'"
-                            f":'min({height},ih)',"
+                            f"\"[0:v]scale='min({width},iw)':"
+                            f"'min({height},ih)',"
                             f"pad={width}:{height}:(ow-iw)/2:(oh-ih)/2[v1];"
                             f"[v1]drawtext="
                                 f"text='{self.__artist} - {self.__title}':"
