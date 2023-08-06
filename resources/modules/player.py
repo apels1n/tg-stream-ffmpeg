@@ -10,7 +10,16 @@ class Player():
         self.__meta = MetaViewer.MetaViewer(self.__audio)
         self.__artist, self.__title = self.__meta.getArtistAndTitle()
         self.__minutes, self.__seconds = self.__meta.getDuration()
+        self.__vid_min, self.__vid_sec = self.__checkCorrectDuration(self.__minutes, self.__seconds)
         self.__cover = self.__meta.getTrackCover()
+
+    def __checkCorrectDuration(self, __minutes, __seconds):
+        __seconds + 3
+        if __seconds == 60:
+            __seconds = 0
+            return __minutes + 1, __seconds
+        else:
+            return __minutes, __seconds
 
     def play(self):
         fps = os.environ.get('fps')
@@ -64,7 +73,7 @@ class Player():
                          f"-b:a 320k\x20"
                          f"-ac 2\x20"
                          f"-ar 44100\x20"
-                         f"-t {self.__minutes}:{self.__seconds + 3}\x20"
+                         f"-t {self.__vid_min}:{self.__vid_sec}\x20"
                          f"-video_size \"{width}x{height}\"\x20"
                          f"-map \"[v3]\"\x20"
                          f"-map 1:a\x20"
