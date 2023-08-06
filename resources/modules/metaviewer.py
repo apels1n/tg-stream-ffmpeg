@@ -29,8 +29,10 @@ class MetaViewer:
     def __get_cover(self):
         for tag in self.__audio.getall('APIC'):
             if isinstance(tag, APIC):
-                with open("resources/tmp/tmp_cover.jpg", 'wb') as cover:
-                    cover.write(tag.data)
-
+                image_stream = io.BytesIO(tag.data)
+                image = Image.open(image_stream)
+                if image.mode != "RGB":
+                    image = image.convert("RGB")
+                image.save("resources/tmp/cover.jpg", format='JPEG')
                 return "resources/tmp/cover.jpg"
         return "resources/unknown_cover.jpg"
