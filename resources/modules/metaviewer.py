@@ -7,7 +7,7 @@ class MetaViewer:
         self.__audio = ID3(self.__audio_file)
         self.__artist = self.__audio.get('TPE1').text[0] or 'Unknown Artist'
         self.__title = self.__audio.get('TIT2').text[0] or 'Unknown Title'
-        self.__cover = self.__audio.getall('APIC')[0].data
+        self.__cover = self.__get_cover()
 
     def getArtistAndTitle(self):
         return self.__artist, self.__title
@@ -22,3 +22,9 @@ class MetaViewer:
 
     def getTrackCover(self):
         return self.__cover
+
+    def __get_cover(self):
+        for tag in self.__audio.getall('APIC'):
+            if isinstance(tag, APIC):
+                return tag.data
+        return None
