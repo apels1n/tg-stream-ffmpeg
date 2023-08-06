@@ -1,5 +1,8 @@
 from mutagen.id3 import ID3, APIC
 from mutagen.mp3 import MP3
+import io
+from PIL import Image
+
 
 class MetaViewer:
     def __init__(self, audio_file):
@@ -26,7 +29,10 @@ class MetaViewer:
     def __get_cover(self):
         for tag in self.__audio.getall('APIC'):
             if isinstance(tag, APIC):
-                with open("resources/tmp/cover.jpg", 'wb') as cover:
-                    cover.write(tag.data)
+                image_stream = io.BytesIO(tag.data)
+                image = Image.open(image_stream)
+                if image.mode != "RGB":
+                    image = image.convert("RGB")
+                image.save("resources/tmp/cover.jpg", format='JPEG')
                 return "resources/tmp/cover.jpg"
         return "resources/unknown_cover.jpg"
